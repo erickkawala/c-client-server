@@ -5,7 +5,7 @@ using namespace std;
 
 template <class T>
 // pre: none
-// post: a[0..n-1] is sorted in nondecreasing order
+// post: a[0..n-1] is sorted in increasing order
 void insertion_sort(T a[], std::size_t n)
 {
     for (int i = 1; i < n; ++i)

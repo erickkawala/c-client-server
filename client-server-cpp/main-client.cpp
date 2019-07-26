@@ -7,26 +7,26 @@
 //
 
 #include <iostream>
-#include <fstream>      //For opening and closing files
+#include <fstream>      // file open/close
 #include <cstring>
 #include <string>
-#include <sys/socket.h> // Needed for the socket functions
-#include <netdb.h>      // Needed for the socket functions
-#include <netinet/in.h> //For sockaddr_in struct
+#include <sys/socket.h> // socket functions
+#include <netdb.h>      // socket functions
+#include <netinet/in.h> // sockaddr_in struct
 
 
 
 int main(int argc, char *argv[]) {
     
-    //The array we will use to capture the message entered by the user
+    // message buffer
     char array[256];
     
-    //create the struct that will contain the host information
+    // host entity info struct
     struct hostent *host;
     
     
     
-    //Get the information
+    // get host information
     if ((host = gethostbyname(argv[1])) == NULL)
         
     {
@@ -36,32 +36,28 @@ int main(int argc, char *argv[]) {
         
     }
     
-    //Initialize the address structure
+    // init address struct
     struct sockaddr_in my_addr;
     
-    //Initialize our address structureth zeroes
+    // init address with zeroes
     bzero((char*) &my_addr, sizeof(my_addr));
     
-    //Use IPV4
+    // Use IPV4
     my_addr.sin_family = AF_INET;
     
-    //Set the port to 8888
+    // Set the port to 8888
     my_addr.sin_port = htons(8888);
     
-    //Initialing my_addr with info returned to hostent host struct
+    // init my_addr with info returned from host entity info struct
     bcopy((char*) host->h_addr,(char *) &my_addr.sin_addr,host->h_length);
     
     
     
-    // Create a socket, use UDP
+    // create UDP socket
+    std::cout<<"Creating UDP socket \n";
+    int Sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
     
-    std::cout<<"Creating a socket \n";
-    int Sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP); //if returns -1, unable
-    
-    
-    
-    //Make sure the socket opened
-    
+    //error returns -1
     if (Sockfd == -1)
         
     {
@@ -69,21 +65,18 @@ int main(int argc, char *argv[]) {
         return 2;
     }
     
+    //Poll forever
     int x;
-    
-    //Loop forever
     while ((x=1))
     {
-        //Get the message from the user
+        //Get message buffer
         std::cout << "Please enter a message to send to the server\n";
         std::cin>>array;
         
-        //Send messag to the server
+        //Send message buffer
         long int num_bytes = sendto(Sockfd, argv[2], 256, 0, (struct sockaddr*) & host,  sizeof(host));
-        std::cout<<"Sending "<<num_bytes<<"of data to server";
-        //Receive message from the server recvfrom
-        
-        
+        std::cout << "Sending " << num_bytes << "of data to server";
+        //Receive message buffer from server with recvfrom
         //Print message from the server
     }
     

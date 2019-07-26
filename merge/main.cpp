@@ -24,8 +24,8 @@ void merge(T x[], int lo, int mid, int hi)
       for (int k = lo; k <= hi; ++k)
       {
           if (i > mid-lo)
-              x[k] = aux[j++]; // list A has been exhausted
-          else if (j > hi-lo)     // list B has been exhausted
+              x[k] = aux[j++]; // list A exhausted
+          else if (j > hi-lo)     // list B exhausted
               x[k] = aux[i++];
 
           else if (aux[j] < aux[i])
@@ -38,7 +38,7 @@ void merge(T x[], int lo, int mid, int hi)
 
 }
 
-// iterative merge sort using no recursion
+// iterative merge sort
 template <class T>
 void ims(T a[], int n)
 {
